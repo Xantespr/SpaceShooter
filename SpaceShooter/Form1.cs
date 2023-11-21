@@ -32,6 +32,11 @@ namespace SpaceShooter
 
         Random rnd;
 
+
+        int score;
+        bool pause;
+        bool gameIsOver;
+
         public Form1()
         {
             InitializeComponent();
@@ -39,8 +44,11 @@ namespace SpaceShooter
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            backgroundSpeed = 4;
+            pause = false;
+            gameIsOver = false;
+            score = 0;
 
+            backgroundSpeed = 4;
             playerSpeed = 4;
             enemySpeed = 4;
 
@@ -53,13 +61,13 @@ namespace SpaceShooter
             rnd = new Random();
 
             // Load images
-            Image munition = Image.FromFile(@"Assets\munition.png");
+            Image munition = Image.FromFile(@"..\..\Assets\munition.png");
 
-            Image enemy1 = Image.FromFile("Assets\\en1.png");
-            Image enemy2 = Image.FromFile("Assets\\en2.png");
-            Image enemy3 = Image.FromFile("Assets\\en2.png");
-            Image boss1 = Image.FromFile("Assets\\boss1.png");
-            Image boss2 = Image.FromFile("Assets\\boss1.png");
+            Image enemy1 = Image.FromFile(@"Assets\en1.png");
+            Image enemy2 = Image.FromFile(@"Assets\en2.png");
+            Image enemy3 = Image.FromFile(@"Assets\en2.png");
+            Image boss1 = Image.FromFile(@"Assets\boss1.png");
+            Image boss2 = Image.FromFile(@"Assets\boss1.png");
 
             enemies = new PictureBox[10];
 
@@ -112,9 +120,9 @@ namespace SpaceShooter
             explosion = new WindowsMediaPlayer();
             shootMedia = new WindowsMediaPlayer();
 
-            gameMedia.URL = "Sounds/gameSoundtrack.wav";
-            shootMedia.URL = "Sounds/laser.wav";
-            explosion.URL = "Sounds/explosion.wav";
+            gameMedia.URL = @"Sounds\gameSoundtrack.wav";
+            shootMedia.URL = @"Sounds\laser.wav";
+            explosion.URL = @"Sounds\explosion.wav";
 
             //Setup Sounds Settings
             gameMedia.settings.setMode("loop", true);
@@ -206,21 +214,24 @@ namespace SpaceShooter
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Right)
+            if (!pause) 
             {
-                RightMoveTimer.Start();
-            }
-            if (e.KeyCode == Keys.Left)
-            {
-                LeftMoveTimer.Start();
-            }
-            if (e.KeyCode == Keys.Down)
-            {
-                DownMoveTimer.Start();
-            }
-            if (e.KeyCode == Keys.Up)
-            {
-                UpMoveTimer.Start();
+                if (e.KeyCode == Keys.Right)
+                {
+                    RightMoveTimer.Start();
+                }
+                if (e.KeyCode == Keys.Left)
+                {
+                    LeftMoveTimer.Start();
+                }
+                if (e.KeyCode == Keys.Down)
+                {
+                    DownMoveTimer.Start();
+                }
+                if (e.KeyCode == Keys.Up)
+                {
+                    UpMoveTimer.Start();
+                }
             }
         }
 
@@ -241,6 +252,28 @@ namespace SpaceShooter
             if (e.KeyCode == Keys.Up)
             {
                 UpMoveTimer.Stop();
+            }
+            if (e.KeyCode == Keys.Space)
+            {
+                if (!gameIsOver) 
+                {
+                    if (pause)
+                    {
+                        StartTimers();
+                        label.Visible = false;
+                        gameMedia.controls.play();
+                        pause = false;
+                    }
+                    else
+                    {
+                        label.Location = new Point(130, 150);
+                        label.Text = "Game Paused";
+                        label.Visible = true;
+                        gameMedia.controls.pause();
+                        StopTimers();
+                        pause = true;
+                    }
+                }
             }
         }
 
@@ -292,6 +325,21 @@ namespace SpaceShooter
                 if (munitions[0].Bounds.IntersectsWith(enemies[i].Bounds) || munitions[1].Bounds.IntersectsWith(enemies[i].Bounds) || munitions[2].Bounds.IntersectsWith(enemies[i].Bounds))
                 {
                     explosion.controls.play();
+
+                    score += 1;
+                    scoreLabel.Text = (score < 10) ? "Score:  0" + score.ToString() : "Score:  " + score.ToString();
+
+                    if (score % 30 == 0)
+                    {
+                        enemySpeed++;
+                        enemyMunitionSpeed++;
+                    }
+
+                    if (score >= 300)
+                    {
+                        GameOver("GOOD JOB!");
+                    }
+
                     enemies[i].Location = new Point((i + 1) * 50, -100);
                 }
                 if (Player.Bounds.IntersectsWith(enemies[i].Bounds))
@@ -299,7 +347,7 @@ namespace SpaceShooter
                     explosion.settings.volume = 9;
                     explosion.controls.play();
                     Player.Visible = false;
-                    GameOver("");
+                    GameOver("Game Over");
                 }
             }
         
@@ -307,6 +355,11 @@ namespace SpaceShooter
 
         private void GameOver(string str)
         {
+            label.Text = str;
+            label.Visible = true;
+            replayButton.Visible = true;
+            quitButton.Visible = true;
+
             gameMedia.controls.stop();
             StopTimers();
         }
@@ -360,6 +413,18 @@ namespace SpaceShooter
                     GameOver("Game Over");
                 }
             }
+        }
+
+        private void quitButton_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(1);
+        }
+
+        private void replayButton_Click(object sender, EventArgs e)
+        {
+            this.Controls.Clear();
+            InitializeComponent();
+            Form1_Load(e, e);
         }
     }
 }

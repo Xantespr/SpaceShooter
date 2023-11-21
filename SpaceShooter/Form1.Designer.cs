@@ -39,6 +39,10 @@
             this.MoveMunitionTimer = new System.Windows.Forms.Timer(this.components);
             this.MoveEnemyTimer = new System.Windows.Forms.Timer(this.components);
             this.enemyMunitionTimer = new System.Windows.Forms.Timer(this.components);
+            this.label = new System.Windows.Forms.Label();
+            this.replayButton = new System.Windows.Forms.Button();
+            this.quitButton = new System.Windows.Forms.Button();
+            this.scoreLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
             this.SuspendLayout();
             // 
@@ -96,12 +100,65 @@
             this.enemyMunitionTimer.Interval = 20;
             this.enemyMunitionTimer.Tick += new System.EventHandler(this.enemyMunitionTimer_Tick);
             // 
+            // label
+            // 
+            this.label.AutoSize = true;
+            this.label.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.label.Font = new System.Drawing.Font("Perpetua", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.label.Location = new System.Drawing.Point(152, 109);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(193, 73);
+            this.label.TabIndex = 1;
+            this.label.Text = "label1";
+            this.label.Visible = false;
+            // 
+            // replayButton
+            // 
+            this.replayButton.Font = new System.Drawing.Font("Perpetua", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.replayButton.Location = new System.Drawing.Point(200, 220);
+            this.replayButton.Name = "replayButton";
+            this.replayButton.Size = new System.Drawing.Size(200, 40);
+            this.replayButton.TabIndex = 2;
+            this.replayButton.Text = "REPLAY";
+            this.replayButton.UseVisualStyleBackColor = true;
+            this.replayButton.Visible = false;
+            this.replayButton.Click += new System.EventHandler(this.replayButton_Click);
+            // 
+            // quitButton
+            // 
+            this.quitButton.Font = new System.Drawing.Font("Perpetua", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.quitButton.Location = new System.Drawing.Point(200, 300);
+            this.quitButton.Name = "quitButton";
+            this.quitButton.Size = new System.Drawing.Size(200, 40);
+            this.quitButton.TabIndex = 3;
+            this.quitButton.Text = "QUIT";
+            this.quitButton.UseVisualStyleBackColor = true;
+            this.quitButton.Visible = false;
+            this.quitButton.Click += new System.EventHandler(this.quitButton_Click);
+            // 
+            // scoreLabel
+            // 
+            this.scoreLabel.AutoSize = true;
+            this.scoreLabel.BackColor = System.Drawing.Color.Transparent;
+            this.scoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.scoreLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.scoreLabel.Location = new System.Drawing.Point(460, 9);
+            this.scoreLabel.Name = "scoreLabel";
+            this.scoreLabel.Size = new System.Drawing.Size(104, 25);
+            this.scoreLabel.TabIndex = 4;
+            this.scoreLabel.Text = "Score: 00";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Navy;
             this.ClientSize = new System.Drawing.Size(584, 461);
+            this.Controls.Add(this.scoreLabel);
+            this.Controls.Add(this.quitButton);
+            this.Controls.Add(this.replayButton);
+            this.Controls.Add(this.label);
             this.Controls.Add(this.Player);
             this.MaximumSize = new System.Drawing.Size(600, 500);
             this.MinimumSize = new System.Drawing.Size(600, 500);
@@ -112,6 +169,7 @@
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.Player)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -126,6 +184,10 @@
         private System.Windows.Forms.Timer MoveMunitionTimer;
         private System.Windows.Forms.Timer MoveEnemyTimer;
         private System.Windows.Forms.Timer enemyMunitionTimer;
+        private System.Windows.Forms.Label label;
+        private System.Windows.Forms.Button replayButton;
+        private System.Windows.Forms.Button quitButton;
+        private System.Windows.Forms.Label scoreLabel;
     }
 }
 
