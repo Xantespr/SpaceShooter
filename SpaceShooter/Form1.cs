@@ -61,14 +61,14 @@ namespace SpaceShooter
             rnd = new Random();
 
             // Load images
-            Image munition = Image.FromFile(@"..\..\Assets\munition.png");
-
+            Image munition = Image.FromFile(@"Assets\munition.png");
             Image enemy1 = Image.FromFile(@"Assets\en1.png");
             Image enemy2 = Image.FromFile(@"Assets\en2.png");
             Image enemy3 = Image.FromFile(@"Assets\en2.png");
             Image boss1 = Image.FromFile(@"Assets\boss1.png");
             Image boss2 = Image.FromFile(@"Assets\boss1.png");
 
+            // Initialize enemies
             enemies = new PictureBox[10];
 
             for (int i = 0; i < enemies.Length; i++)
@@ -93,6 +93,8 @@ namespace SpaceShooter
             enemies[8].Image = enemy3; 
             enemies[9].Image = boss2;
 
+
+            // initialize  bullets
             for (int i = 0; i < enemyMunitions.Length; i++)
             {
                 enemyMunitions[i] = new PictureBox();
@@ -104,7 +106,6 @@ namespace SpaceShooter
                 this.Controls.Add(enemyMunitions[i]);
             }
 
-
             for (int i = 0; i < munitions.Length; i++)
             {
                 munitions[i] = new PictureBox();
@@ -115,7 +116,7 @@ namespace SpaceShooter
                 this.Controls.Add(munitions[i]);
             }
 
-            //Create WMP
+            //Create WMP for sounds
             gameMedia = new WindowsMediaPlayer();
             explosion = new WindowsMediaPlayer();
             shootMedia = new WindowsMediaPlayer();
@@ -124,15 +125,18 @@ namespace SpaceShooter
             shootMedia.URL = @"Sounds\laser.wav";
             explosion.URL = @"Sounds\explosion.wav";
 
-            //Setup Sounds Settings
+            //Setup sounds settings
             gameMedia.settings.setMode("loop", true);
             gameMedia.settings.volume = 3;
             explosion.settings.volume = 4;
             shootMedia.settings.volume = 1;
 
+            gameMedia.controls.play();
+            shootMedia.controls.stop();
+            explosion.controls.stop();
+
+            //Adding stars in the background
             stars = new PictureBox[10];
-
-
             for (int i = 0; i < stars.Length; i++)
             {
                 stars[i] = new PictureBox();
@@ -151,11 +155,9 @@ namespace SpaceShooter
 
                 this.Controls.Add(stars[i]);
             }
-            gameMedia.controls.play();
-            shootMedia.controls.stop();
-            explosion.controls.stop();
         }
 
+        //timer to move  stars in the background
         private void MoveBgTimer_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < stars.Length / 2; i++)
@@ -180,6 +182,7 @@ namespace SpaceShooter
             }
         }
 
+        //timers to move player
         private void LeftMoveTimer_Tick(object sender, EventArgs e)
         {
             if (Player.Left > 10)
@@ -212,6 +215,7 @@ namespace SpaceShooter
             }
         }
 
+        //manage keyDown/keyUp
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (!pause) 
@@ -255,6 +259,7 @@ namespace SpaceShooter
             }
             if (e.KeyCode == Keys.Space)
             {
+                //display pause menu
                 if (!gameIsOver) 
                 {
                     if (pause)
@@ -276,7 +281,7 @@ namespace SpaceShooter
                 }
             }
         }
-
+        //player's bullets
         private void MoveMunitionTimer_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < munitions.Length; i++)
@@ -299,6 +304,7 @@ namespace SpaceShooter
             }
         }
 
+        //enemy movement
         private void MoveEnemyTimer_Tick(object sender, EventArgs e)
         {
             MoveEnemies(enemies, enemySpeed);
@@ -318,6 +324,7 @@ namespace SpaceShooter
             }
         }
 
+        //check for collision with bullets or enemy + game harder with more score
         private void Collision()
         {
             for (int i = 0; i < enemies.Length; i++) 
@@ -352,14 +359,13 @@ namespace SpaceShooter
             }
         
         }
-
+        //gameOver menu
         private void GameOver(string str)
         {
             label.Text = str;
             label.Visible = true;
             replayButton.Visible = true;
             quitButton.Visible = true;
-
             gameMedia.controls.stop();
             StopTimers();
         }
@@ -379,7 +385,7 @@ namespace SpaceShooter
             MoveMunitionTimer.Start();
             enemyMunitionTimer.Start();
         }
-
+        //enemy shoots
         private void enemyMunitionTimer_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < enemyMunitions.Length; i++)
@@ -399,7 +405,7 @@ namespace SpaceShooter
                 }
             }
         }
-
+        //chech for bullets that hit player
         private void CollisionWithEnemyMunition() 
         {
             for (int i = 0; i < enemyMunitions.Length; i++)

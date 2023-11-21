@@ -160,6 +160,7 @@
             this.Controls.Add(this.replayButton);
             this.Controls.Add(this.label);
             this.Controls.Add(this.Player);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(600, 500);
             this.MinimumSize = new System.Drawing.Size(600, 500);
             this.Name = "Form1";
